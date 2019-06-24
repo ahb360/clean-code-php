@@ -1,19 +1,19 @@
 ﻿# Clean Code PHP
 
-## Table of Contents
+## فهرست مطالب
 
-  1. [Introduction](#introduction)
-  2. [Variables](#variables)
-     * [Use meaningful and pronounceable variable names](#use-meaningful-and-pronounceable-variable-names)
-     * [Use the same vocabulary for the same type of variable](#use-the-same-vocabulary-for-the-same-type-of-variable)
-     * [Use searchable names (part 1)](#use-searchable-names-part-1)
-     * [Use searchable names (part 2)](#use-searchable-names-part-2)
-     * [Use explanatory variables](#use-explanatory-variables)
-     * [Avoid nesting too deeply and return early (part 1)](#avoid-nesting-too-deeply-and-return-early-part-1)
-     * [Avoid nesting too deeply and return early (part 2)](#avoid-nesting-too-deeply-and-return-early-part-2)
-     * [Avoid Mental Mapping](#avoid-mental-mapping)
-     * [Don't add unneeded context](#dont-add-unneeded-context)
-     * [Use default arguments instead of short circuiting or conditionals](#use-default-arguments-instead-of-short-circuiting-or-conditionals)
+  1. [مقدمه](#introduction)
+  2. [متغیرها](#variables)
+     * [از نام متغیرهایی استفاده کنید که با معنی و قابل بیان کردن باشند](#use-meaningful-and-pronounceable-variable-names)
+     * [برای یک نوع متغیر از واژگان یکسان استفاده کنید](#use-the-same-vocabulary-for-the-same-type-of-variable)
+     * [از نام‌های قابل جستجو استفاده کنید (بخش ۱)](#use-searchable-names-part-1)
+     * [از نام‌های قابل جستجو استفاده کنید (بخش ۲)](#use-searchable-names-part-2)
+     * [از متغیرهای توضیحی استفاده کنید](#use-explanatory-variables)
+     * [از کدهای تو در تو اجتناب کنید و زود پاسخ را برگردانید (بخش ۱)](#avoid-nesting-too-deeply-and-return-early-part-1)
+     * [از کدهای تو در تو اجتناب کنید و زود پاسخ را برگردانید (بخش ۲)](#avoid-nesting-too-deeply-and-return-early-part-2)
+     * [از نگاشت ذهنی اجتناب کنید](#avoid-mental-mapping)
+     * [متن بلا استفاده ایجاد نکنید](#dont-add-unneeded-context)
+     * [از آرگومان‌های پیش فرض به جای آرگومان‌های کوتاه شده یا نا مفهوم استفاده کنید](#use-default-arguments-instead-of-short-circuiting-or-conditionals)
   3. [Comparison](#comparison)
      * [Use identical comparison](#use-identical-comparison)
   4. [Functions](#functions)
