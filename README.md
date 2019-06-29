@@ -31,9 +31,9 @@
      * [از چک کردن نوع دوری کنید (بخش ۱)](#avoid-type-checking-part-1)
      * [از چک کردن نوع دوری کنید (بخش ۲)](#avoid-type-checking-part-2)
      * [کد مرده را حذف کنید](#remove-dead-code)
-  5. [Objects and Data Structures](#objects-and-data-structures)
-     * [Use object encapsulation](#use-object-encapsulation)
-     * [Make objects have private/protected members](#make-objects-have-privateprotected-members)
+  5. [اشیا و ساختمان داده](#objects-and-data-structures)
+     * [از کپسوله سازی شیء استفاده کنید](#use-object-encapsulation)
+     * [کاری کنید که اشیاء اعضای private/protected داشته باشند](#make-objects-have-privateprotected-members)
   6. [Classes](#classes)
      * [Prefer composition over inheritance](#prefer-composition-over-inheritance)
      * [Avoid fluent interfaces](#avoid-fluent-interfaces)
@@ -1141,25 +1141,25 @@ inventoryTracker('apples', $request, 'www.inventory-awesome.io');
 **[⬆ بازگشت به بالا](#table-of-contents)**
 
 
-## Objects and Data Structures
+## اشیا و ساختمان داده
 
-### Use object encapsulation
+### از کپسوله سازی شیء استفاده کنید
 
-In PHP you can set `public`, `protected` and `private` keywords for methods.
-Using it, you can control properties modification on an object.
+در PHP امکان تنظیم کلمات کلیدی `public`، `protected` و `private` برای متدها وجود دارد.
+با استفاده از این قابلیت، می‌توانید تغییرات خواص شیء را کنترل کنید.
 
-* When you want to do more beyond getting an object property, you don't have
-to look up and change every accessor in your codebase.
-* Makes adding validation simple when doing a `set`.
-* Encapsulates the internal representation.
-* Easy to add logging and error handling when getting and setting.
-* Inheriting this class, you can override default functionality.
-* You can lazy load your object's properties, let's say getting it from a
-server.
+* وقتی می‌خواهید کاری بیشتر از گرفتم یک خاصیت از شیء را انجام دهید،‌ لازم نیست که بگردید
+و هر دسترسی در کد شما وجود دارد را تغییر دهید.
+* اعتبار سنجی را وقتی بر روی یک `set` کار می‌کنید راحت تر می‌کند.
+* اراه داخلی را کپسوله می کند.
+* افزودن گزارش گیری و مدیریت خطالها در هنگام گرفتن و تنظیم ساده‌تر خواهد بود.
+* با ارث بری از این کلاس، می‌توانید کارایی آن را بازنویسی کنید.
+* می‌توانید خواص شیء خود را در حالت تنبل بارگذاری کنید، بگذارید بگویم آنها را از سرور
+بگیرید.
 
-Additionally, this is part of [Open/Closed](#openclosed-principle-ocp) principle.
+به علاوه این بخشی از اصل [Open/Closed](#openclosed-principle-ocp) است.
 
-**Bad:**
+**بد:**
 
 ```php
 class BankAccount
@@ -1173,7 +1173,7 @@ $bankAccount = new BankAccount();
 $bankAccount->balance -= 100;
 ```
 
-**Good:**
+**خوب:**
 
 ```php
 class BankAccount
@@ -1216,17 +1216,17 @@ $balance = $bankAccount->getBalance();
 
 **[⬆ back to top](#table-of-contents)**
 
-### Make objects have private/protected members
+### کاری کنید که اشیاء اعضای private/protected داشته باشند
 
-* `public` methods and properties are most dangerous for changes, because some outside code may easily rely on them and you can't control what code relies on them. **Modifications in class are dangerous for all users of class.**
-* `protected` modifier are as dangerous as public, because they are available in scope of any child class. This effectively means that difference between public and protected is only in access mechanism, but encapsulation guarantee remains the same. **Modifications in class are dangerous for all descendant classes.**
-* `private` modifier guarantees that code is **dangerous to modify only in boundaries of single class** (you are safe for modifications and you won't have [Jenga effect](http://www.urbandictionary.com/define.php?term=Jengaphobia&defid=2494196)).
+* خواص و متدهای `public` برای تغییرات خطرناک‌ترین‌ها هستند، زیرا یک کد خارجی ممکن است به سادگی به آنها تکیه کند و نمی‌توانید کنترل کنید که چه کدی به آنها وابسته است. **تغییر دادن در کلاس برای همه کاربران آن کلاس خطرناک است.**
+* اصلاح کننده `protected` هم مانند `public` خطرناک است، زیرا در اسکوپ هر کلاس فرزند در دسترس هستند. این بدان معناست که تفاوت بین public و protected فقط در مکانیسم دسترسی است، ولی پشتیبانی از کپسوله سازی به همان شکل قبل باقی می‌ماند. **تغییر دادن در کلاس بریا همه فرزندان کلاس خطرناک است**
+* اصلاح کننده `private` گارانتی می‌کند که **تغییر کد فقط در مرز همان کلاس خطرناک است.** (شما در تغییرات امنیت دارید و عارضه [اثر Jenga](http://www.urbandictionary.com/define.php?term=Jengaphobia&defid=2494196) را نخواهید داشت).
 
-Therefore, use `private` by default and `public/protected` when you need to provide access for external classes.
+به همید دلیل به صورت پیش فرض از `private` استفاده کنید و از `public/protected` زمانی استفاده کنید که نیاز به ارائه دسترسی توسط کلاس‌های خارجی دارید.
 
-For more informations you can read the [blog post](http://fabien.potencier.org/pragmatism-over-theory-protected-vs-private.html) on this topic written by [Fabien Potencier](https://github.com/fabpot).
+برای اطلاعات بیشتر این [پست وبلاگ](http://fabien.potencier.org/pragmatism-over-theory-protected-vs-private.html) درباره همین موضوع که توسط [Fabien Potencier](https://github.com/fabpot) نوشته شده را مطالعه کنید.
 
-**Bad:**
+**بد:**
 
 ```php
 class Employee
@@ -1243,7 +1243,7 @@ $employee = new Employee('John Doe');
 echo 'Employee name: '.$employee->name; // Employee name: John Doe
 ```
 
-**Good:**
+**خوب:**
 
 ```php
 class Employee
