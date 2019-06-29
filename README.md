@@ -14,8 +14,8 @@
      * [از نگاشت ذهنی اجتناب کنید](#avoid-mental-mapping)
      * [متن بلا استفاده ایجاد نکنید](#dont-add-unneeded-context)
      * [از آرگومان‌های پیش فرض به جای آرگومان‌های کوتاه شده یا نا مفهوم استفاده کنید](#use-default-arguments-instead-of-short-circuiting-or-conditionals)
-  3. [Comparison](#comparison)
-     * [Use identical comparison](#use-identical-comparison)
+  3. [مقایسه](#comparison)
+     * [از مقایسه‌های منطبق استفاده کنید](#use-identical-comparison)
   4. [Functions](#functions)
      * [Function arguments (2 or fewer ideally)](#function-arguments-2-or-fewer-ideally)
      * [Functions should do one thing](#functions-should-do-one-thing)
@@ -404,13 +404,13 @@ function createMicrobrewery(string $breweryName = 'Hipster Brew Co.'): void
 
 **[⬆ بازگشت به بالا](#table-of-contents)**
 
-## Comparison
+## مقایسه
 
-### Use [identical comparison](http://php.net/manual/en/language.operators.comparison.php)
+### از [مقایسه‌های منطبق](http://php.net/manual/en/language.operators.comparison.php) استفاده کنید
 
-**Not good:**
+**خوب نیست:**
 
-The simple comparison will convert the string in an integer.
+یک مقایسه ساده رشته را به عدد تغییر می‌دهد.
 
 ```php
 $a = '42';
@@ -421,12 +421,12 @@ if ($a != $b) {
 }
 ```
 
-The comparison `$a != $b` returns `FALSE` but in fact it's `TRUE`!
-The string `42` is different than the integer `42`.
+مقایسه `$a != $b` جواب `FALSE` را بر می‌گرداند ولی در واقع `TRUE` است!
+رشته `42` با عدد صحیح `42` یکی نیستند.
 
-**Good:**
+**خوب:**
 
-The identical comparison will compare type and value.
+مقایسه منطبق هم نوع و هم مقدار را با هم مقایسه می‌کند.
 
 ```php
 $a = '42';
@@ -437,9 +437,9 @@ if ($a !== $b) {
 }
 ```
 
-The comparison `$a !== $b` returns `TRUE`.
+مقایسه `$a !== $b` جواب `TRUE` را برمی‌گرداند.
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ بازگشت به بالا](#table-of-contents)**
 
 
 ## Functions
