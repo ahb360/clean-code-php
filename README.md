@@ -64,27 +64,27 @@
 با وجود اینکه بسیاری از توسعه دهندگان هنوز از PHP 5 استفاده می‌کنند, بسیاری از مثال‌های موجود در این مقاله
 فقط در PHP 7.1+ کار می‌کنند.
 
-## Variables
+## متغیرها
 
-### Use meaningful and pronounceable variable names
+### از نام متغیرهایی استفاده کنید که با معنی و قابل بیان کردن باشند
 
-**Bad:**
+**بد:**
 
 ```php
 $ymdstr = $moment->format('y-m-d');
 ```
 
-**Good:**
+**خوب:**
 
 ```php
 $currentDate = $moment->format('y-m-d');
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ بازگشت به بالا](#table-of-contents)**
 
-### Use the same vocabulary for the same type of variable
+### برای یک نوع متغیر از واژگان یکسان استفاده کنید
 
-**Bad:**
+**بد:**
 
 ```php
 getUserInfo();
@@ -93,55 +93,55 @@ getUserRecord();
 getUserProfile();
 ```
 
-**Good:**
+**خوب:**
 
 ```php
 getUser();
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ بازگشت به بالا](#table-of-contents)**
 
-### Use searchable names (part 1)
+### از نام‌های قابل جستجو استفاده کنید (بخش ۱)
 
-We will read more code than we will ever write. It's important that the code we do write is
-readable and searchable. By *not* naming variables that end up being meaningful for
-understanding our program, we hurt our readers.
-Make your names searchable.
+ما بیش از اینکه کد بنویسیم، کد میخوانیم. در نتیجه این موضوع که کد ما قابل جستجو و خواندن
+باشد اهمیت پیدا می‌کند. اگر متغیرها را به صورتی نامگذاری نکنیم که معنی درستی داشته باشند و
+در فهم برنامه کمک کنند. در واقع به کسانی که برنامه ما را می‌خوانند صدمه زده‌ایم.
+نام‌های متغیرها را به صورتی انتخاب کنید که قابل جستجو شدن باشند.
 
-**Bad:**
+**بد:**
 
 ```php
-// What the heck is 448 for?
+// این ۴۸۸ دیگه از کجا اومد؟
 $result = $serializer->serialize($data, 448);
 ```
 
-**Good:**
+**خوب:**
 
 ```php
 $json = $serializer->serialize($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 ```
 
-### Use searchable names (part 2)
+### از نام‌های قابل جستجو استفاده کنید (بخش ۲)
 
-**Bad:**
+**بد:**
 
 ```php
 class User
 {
-    // What the heck is 7 for?
+    // این ۷ دیگه از کجا اومد؟
     public $access = 7;
 }
 
-// What the heck is 4 for?
+// ۴ چی میگه؟
 if ($user->access & 4) {
     // ...
 }
 
-// What's going on here?
+// اینجا چه خبره؟
 $user->access ^= 2;
 ```
 
-**Good:**
+**خوب:**
 
 ```php
 class User
@@ -151,23 +151,23 @@ class User
     const ACCESS_UPDATE = 4;
     const ACCESS_DELETE = 8;
 
-    // User as default can read, create and update something
+    // کاربر به صورت پیش فرض میتونه چیزی رو بخونه، ایجاد کنه و بروز رسانی کنه
     public $access = self::ACCESS_READ | self::ACCESS_CREATE | self::ACCESS_UPDATE;
 }
 
 if ($user->access & User::ACCESS_UPDATE) {
-    // do edit ...
+    // ویرایش رو انجام بده ...
 }
 
-// Deny access rights to create something
+// دسترسی برای ایجاد چیزی گرفته شده
 $user->access ^= User::ACCESS_CREATE;
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ بازگشت به بالا](#table-of-contents)**
 
-### Use explanatory variables
+### از متغیرهای توضیحی استفاده کنید
 
-**Bad:**
+**بد:**
 
 ```php
 $address = 'One Infinite Loop, Cupertino 95014';
@@ -177,9 +177,9 @@ preg_match($cityZipCodeRegex, $address, $matches);
 saveCityZipCode($matches[1], $matches[2]);
 ```
 
-**Not bad:**
+**بدک نیست:**
 
-It's better, but we are still heavily dependent on regex.
+الان بهتر شد، ولی همچنان خیلی وابسته به regex هستیم.
 
 ```php
 $address = 'One Infinite Loop, Cupertino 95014';
@@ -190,9 +190,9 @@ preg_match($cityZipCodeRegex, $address, $matches);
 saveCityZipCode($city, $zipCode);
 ```
 
-**Good:**
+**خوب:**
 
-Decrease dependence on regex by naming subpatterns.
+با نام گذاری زیرالگوها وابستگی به regex را کم کردیم.
 
 ```php
 $address = 'One Infinite Loop, Cupertino 95014';
@@ -202,14 +202,13 @@ preg_match($cityZipCodeRegex, $address, $matches);
 saveCityZipCode($matches['city'], $matches['zipCode']);
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ بازگشت به بالا](#table-of-contents)**
 
-### Avoid nesting too deeply and return early (part 1)
+### از کدهای تو در تو اجتناب کنید و زود پاسخ را برگردانید (بخش ۱)
 
-Too many if-else statements can make your code hard to follow. Explicit is better
-than implicit.
+تعداد زیادی if-else خواندن و دنبال کردن کد شما را می‌تواند سخت کند. همیشه صراحت بهتر از ضمنی بیان کردن است.
 
-**Bad:**
+**بد:**
 
 ```php
 function isShopOpen($day): bool
@@ -235,7 +234,7 @@ function isShopOpen($day): bool
 }
 ```
 
-**Good:**
+**خوب:**
 
 ```php
 function isShopOpen(string $day): bool
@@ -252,11 +251,11 @@ function isShopOpen(string $day): bool
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ بازگشت به بالا](#table-of-contents)**
 
-### Avoid nesting too deeply and return early (part 2)
+### از کدهای تو در تو اجتناب کنید و زود پاسخ را برگردانید (بخش ۲)
 
-**Bad:**
+**بد:**
 
 ```php
 function fibonacci(int $n)
@@ -277,7 +276,7 @@ function fibonacci(int $n)
 }
 ```
 
-**Good:**
+**خوب:**
 
 ```php
 function fibonacci(int $n): int
@@ -294,14 +293,14 @@ function fibonacci(int $n): int
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ بازگشت به بالا](#table-of-contents)**
 
-### Avoid Mental Mapping
+### از نگاشت ذهنی اجتناب کنید
 
-Don’t force the reader of your code to translate what the variable means.
-Explicit is better than implicit.
+خواننده را مجبور نکنید که برای فهمیدن متغیر آن را ترجمه کند.
+همیشه صراحت بهتر از ضمنی بیان کردن است.
 
-**Bad:**
+**بد:**
 
 ```php
 $l = ['Austin', 'New York', 'San Francisco'];
@@ -313,12 +312,12 @@ for ($i = 0; $i < count($l); $i++) {
     // ...
     // ...
     // ...
-    // Wait, what is `$li` for again?
+    // صبر کن, این `$li` برای چی استفاده می‌شد؟
     dispatch($li);
 }
 ```
 
-**Good:**
+**خوب:**
 
 ```php
 $locations = ['Austin', 'New York', 'San Francisco'];
@@ -333,14 +332,13 @@ foreach ($locations as $location) {
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ بازگشت به بالا](#table-of-contents)**
 
-### Don't add unneeded context
+### متن بلا استفاده ایجاد نکنید
 
-If your class/object name tells you something, don't repeat that in your
-variable name.
+اگر نام کلاس یا شیء چیزی به شما می‌گوید، مجددا آن را در نام متغیر تکرار نکنید.
 
-**Bad:**
+**بد:**
 
 ```php
 class Car
@@ -353,7 +351,7 @@ class Car
 }
 ```
 
-**Good:**
+**خوب:**
 
 ```php
 class Car
@@ -366,13 +364,13 @@ class Car
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ بازگشت به بالا](#table-of-contents)**
 
-### Use default arguments instead of short circuiting or conditionals
+### از آرگومان‌های پیش فرض به جای آرگومان‌های کوتاه شده یا نا مفهوم استفاده کنید
 
-**Not good:**
+**خوب نیست:**
 
-This is not good because `$breweryName` can be `NULL`.
+این خوب نیست چون `$breweryName` می‌تواند `NULL` باشد.
 
 ```php
 function createMicrobrewery($breweryName = 'Hipster Brew Co.'): void
@@ -381,9 +379,9 @@ function createMicrobrewery($breweryName = 'Hipster Brew Co.'): void
 }
 ```
 
-**Not bad:**
+**بد نیست:**
 
-This opinion is more understandable than the previous version, but it better controls the value of the variable.
+این حالت قابل فهم‌تر از قبلی است، ولی بهتر است مقدار متغیر را هم کنترل کند.
 
 ```php
 function createMicrobrewery($name = null): void
@@ -393,9 +391,9 @@ function createMicrobrewery($name = null): void
 }
 ```
 
-**Good:**
+**خوب:**
 
- You can use [type hinting](http://php.net/manual/en/functions.arguments.php#functions.arguments.type-declaration) and be sure that the `$breweryName` will not be `NULL`.
+می‌توانید از [type hinting](http://php.net/manual/en/functions.arguments.php#functions.arguments.type-declaration) استفاده کرده و مطمئن شوید که `$breweryName` مقدار `NULL` نخواهد داشت.
 
 ```php
 function createMicrobrewery(string $breweryName = 'Hipster Brew Co.'): void
@@ -404,7 +402,7 @@ function createMicrobrewery(string $breweryName = 'Hipster Brew Co.'): void
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ بازگشت به بالا](#table-of-contents)**
 
 ## Comparison
 
