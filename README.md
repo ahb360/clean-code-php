@@ -16,21 +16,21 @@
      * [از آرگومان‌های پیش فرض به جای آرگومان‌های کوتاه شده یا نا مفهوم استفاده کنید](#use-default-arguments-instead-of-short-circuiting-or-conditionals)
   3. [مقایسه](#comparison)
      * [از مقایسه‌های منطبق استفاده کنید](#use-identical-comparison)
-  4. [Functions](#functions)
-     * [Function arguments (2 or fewer ideally)](#function-arguments-2-or-fewer-ideally)
-     * [Functions should do one thing](#functions-should-do-one-thing)
-     * [Function names should say what they do](#function-names-should-say-what-they-do)
-     * [Functions should only be one level of abstraction](#functions-should-only-be-one-level-of-abstraction)
-     * [Don't use flags as function parameters](#dont-use-flags-as-function-parameters)
-     * [Avoid Side Effects](#avoid-side-effects)
-     * [Don't write to global functions](#dont-write-to-global-functions)
-     * [Don't use a Singleton pattern](#dont-use-a-singleton-pattern)
-     * [Encapsulate conditionals](#encapsulate-conditionals)
-     * [Avoid negative conditionals](#avoid-negative-conditionals)
-     * [Avoid conditionals](#avoid-conditionals)
-     * [Avoid type-checking (part 1)](#avoid-type-checking-part-1)
-     * [Avoid type-checking (part 2)](#avoid-type-checking-part-2)
-     * [Remove dead code](#remove-dead-code)
+  4. [توابع](#functions)
+     * [پارامترهای تابع (در حالت ایده‌آل ۲ یا کمتر باشد)](#function-arguments-2-or-fewer-ideally)
+     * [توابع باید یک کار انجام دهند](#functions-should-do-one-thing)
+     * [نام توابع باید بگوید که تابع چه کاری انجام می‌دهد](#function-names-should-say-what-they-do)
+     * [توابع باید فقط در یک سطح انتزاعی باشند](#functions-should-only-be-one-level-of-abstraction)
+     * [از flag به عنوان پارامتر در تابع استفاده نکنید](#dont-use-flags-as-function-parameters)
+     * [از تاثیرات جانبی دوری کنید](#avoid-side-effects)
+     * [در توابع جانی چیزی ننویسید](#dont-write-to-global-functions)
+     * [از الگوی Singleton استفاده نکنید](#dont-use-a-singleton-pattern)
+     * [عبارات شرطی را کپسوله سازی کنید](#encapsulate-conditionals)
+     * [از عبارات شرطی منفی دوری کنید](#avoid-negative-conditionals)
+     * [از عبارات شرطی دوری کنید](#avoid-conditionals)
+     * [از چک کردن نوع دوری کنید (بخش ۱)](#avoid-type-checking-part-1)
+     * [از چک کردن نوع دوری کنید (بخش ۲)](#avoid-type-checking-part-2)
+     * [کد مرده را حذف کنید](#remove-dead-code)
   5. [Objects and Data Structures](#objects-and-data-structures)
      * [Use object encapsulation](#use-object-encapsulation)
      * [Make objects have private/protected members](#make-objects-have-privateprotected-members)
@@ -442,20 +442,20 @@ if ($a !== $b) {
 **[⬆ بازگشت به بالا](#table-of-contents)**
 
 
-## Functions
+## توابع
 
-### Function arguments (2 or fewer ideally)
+### پارامترهای تابع (در حالت ایده‌آل ۲ یا کمتر باشد)
 
-Limiting the amount of function parameters is incredibly important because it makes
-testing your function easier. Having more than three leads to a combinatorial explosion
-where you have to test tons of different cases with each separate argument.
+محدود کردن پارامترهای تابع بسیار مهم است به این دلیل که تست کردن تابع را ساده‌تر می‌کند.
+بیش از ۳ پارامتر باعثت انفجار جایگشت‌ها شده و در نتیجه شما باید حالت‌های زیادی را با
+هر پارامتر تست کنید.
 
-Zero arguments is the ideal case. One or two arguments is ok, and three should be avoided.
-Anything more than that should be consolidated. Usually, if you have more than two
-arguments then your function is trying to do too much. In cases where it's not, most
-of the time a higher-level object will suffice as an argument.
+توابع بدون پارامتر حالت ایده‌آل هستند. یک یا دو پارامتر اشکال ندارد، و از ۳ پارامتر باید
+دوری کرد. هر چیز بیشتری از آن را باید ترکیب کرد. معمولا اگر بیش از دو پارامتر داشته باشیم
+تابع ما سعی دارد کار زیادی را انجام دهد. در حالتی که اینگونه نیست، بیشتر مواقع یک شیء
+سطح بالا به عنوان یک پارامتر کافی است.
 
-**Bad:**
+**بد:**
 
 ```php
 function createMenu(string $title, string $body, string $buttonText, bool $cancellable): void
@@ -464,7 +464,7 @@ function createMenu(string $title, string $body, string $buttonText, bool $cance
 }
 ```
 
-**Good:**
+**خوب:**
 
 ```php
 class MenuConfig
@@ -487,17 +487,17 @@ function createMenu(MenuConfig $config): void
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ بازگشت به بالا](#table-of-contents)**
 
-### Functions should do one thing
+### توابع باید یک کار انجام دهند
 
-This is by far the most important rule in software engineering. When functions do more
-than one thing, they are harder to compose, test, and reason about. When you can isolate
-a function to just one action, they can be refactored easily and your code will read much
-cleaner. If you take nothing else away from this guide other than this, you'll be ahead
-of many developers.
+تا الان این مورد مهم‌ترین قانون در مهندسی نرم افزار بوده. وقتی توابع بیش از یک کار انجام
+می‌دهند، ساختن، تست و دلی آوردن در مورد آنها سخت تر می‌شود. وقتی ب‌توانید یک تابع را طوری
+ایزوله کنید که فقط یک کار انجام دهد، اصلاح کردن آن ساده‌تر می‌شود و کد شما تمیزتر
+خواهد بود. اگر هیچ چیزی از این راهنما یاد نگیرید و فقط این مورد را متوجه شوید و استفاده
+کنید، از بسیاری از دولوپرها جلوتر خواهید بود.
 
-**Bad:**
+**بد:**
 ```php
 function emailClients(array $clients): void
 {
@@ -510,7 +510,7 @@ function emailClients(array $clients): void
 }
 ```
 
-**Good:**
+**خوب:**
 
 ```php
 function emailClients(array $clients): void
@@ -532,11 +532,11 @@ function isClientActive(int $client): bool
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ بازگشت به بالا](#table-of-contents)**
 
-### Function names should say what they do
+### نام توابع باید بگوید که تابع چه کاری انجام می‌دهد
 
-**Bad:**
+**بد:**
 
 ```php
 class Email
@@ -554,7 +554,7 @@ $message = new Email(...);
 $message->handle();
 ```
 
-**Good:**
+**خوب:**
 
 ```php
 class Email
@@ -572,15 +572,14 @@ $message = new Email(...);
 $message->send();
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ بازگشت به بالا](#table-of-contents)**
 
-### Functions should only be one level of abstraction
+### توابع باید فقط در یک سطح انتزاعی باشند
 
-When you have more than one level of abstraction your function is usually
-doing too much. Splitting up functions leads to reusability and easier
-testing.
+وقتی بیش از یک سطح انتزاع دارید تابع شما معمولا کارهای زیادی انجام می‌دهد. تکه تکه
+کردن تابع منجر به ایجاد قابلیت استفاده مجدد و تست ساده‌تر خواهد شد.
 
-**Bad:**
+**بد:**
 
 ```php
 function parseBetterJSAlternative(string $code): void
@@ -608,9 +607,10 @@ function parseBetterJSAlternative(string $code): void
 }
 ```
 
-**Bad too:**
+**باز هم بد:**
 
-We have carried out some of the functionality, but the `parseBetterJSAlternative()` function is still very complex and not testable.
+ما بخشی از عملکرد تابع را خارج کدیم ولی هنوز `parseBetterJSAlternative()` خیلی
+پیچیده و غیر قابل تست است.
 
 ```php
 function tokenize(string $code): array
@@ -650,9 +650,9 @@ function parseBetterJSAlternative(string $code): void
 }
 ```
 
-**Good:**
+**خوب:**
 
-The best solution is move out the dependencies of `parseBetterJSAlternative()` function.
+بهترین راهکار خارج کردن وابستگی‌های تابع `parseBetterJSAlternative()` است.
 
 ```php
 class Tokenizer
@@ -710,15 +710,15 @@ class BetterJSAlternative
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ بازگشت به بالا](#table-of-contents)**
 
-### Don't use flags as function parameters
+### از flag به عنوان پارامتر در تابع استفاده نکنید
 
-Flags tell your user that this function does more than one thing. Functions should
-do one thing. Split out your functions if they are following different code paths
-based on a boolean.
+فلگ‌ها به کارب این پیغام را می‌رسانند که این تابع بیش از یک کار انجام می‌دهد. توابع
+باید یک کار انجام دهند. اگر توابع شما مسیرهای مختلفی را بر اساس یک متغیر بولی طی
+می‌کنند، باید شکسته شوند.
 
-**Bad:**
+**بد:**
 
 ```php
 function createFile(string $name, bool $temp = false): void
@@ -731,7 +731,7 @@ function createFile(string $name, bool $temp = false): void
 }
 ```
 
-**Good:**
+**خوب:**
 
 ```php
 function createFile(string $name): void
@@ -745,29 +745,30 @@ function createTempFile(string $name): void
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ بازگشت به بالا](#table-of-contents)**
 
-### Avoid Side Effects
+### از تاثیرات جانبی دوری کنید
 
-A function produces a side effect if it does anything other than take a value in and
-return another value or values. A side effect could be writing to a file, modifying
-some global variable, or accidentally wiring all your money to a stranger.
+یک تابع دارای اثر جانبی است اگر هر کاری به غیر از دریافت ورودی و برگرداندن مقدار یا
+مقادیر دیگری انجام دهد. اثر جانبی می‌تواند نوشتن روی یک فایل، تغییر دادن یک متغیر
+جهانی یا به طور اتفاقی انتقال تمام پول شما به یک غریبه باشد.
 
-Now, you do need to have side effects in a program on occasion. Like the previous
-example, you might need to write to a file. What you want to do is to centralize where
-you are doing this. Don't have several functions and classes that write to a particular
-file. Have one service that does it. One and only one.
+مواردی است که نیاز دارید که در برنامه خود اثر جانبی داشته باشید. مثل مثلا قبلی، احتمال
+دارد نیاز داشته باشید در یک فایل بنویسید. کاری که باید انجام دهید این است که جایی که
+این کار را انجام می‌دهید را در یک نقطه متمرکز کنید. تعداد زیادی تابع و کلاس که روی فایل
+خاصی می‌نویسند نداشته باشید. یک سرویس ایجاد کنید که این کار را انجام دهد. یکی و فقط یکی.
 
-The main point is to avoid common pitfalls like sharing state between objects without
-any structure, using mutable data types that can be written to by anything, and not
-centralizing where your side effects occur. If you can do this, you will be happier
-than the vast majority of other programmers.
+نکته اصلی این است که از تله‌های رایج مانند اشتراک گذاری حالت بین دو شیء بدون هیچ ساختاری،
+استفاده از نوع داده‌های تغییر پذیر که می‌توان در آنها هر چیزی نوشت، و مجتمع نکردن جایی که
+اثرات جانبی شما بوجود می‌آیند دوری کنید. اگر این کار را بکنید، از اکثریت برنامه نویسان
+دیگر شادتر خواهید بود.
 
-**Bad:**
+**بد:**
 
 ```php
-// Global variable referenced by following function.
-// If we had another function that used this name, now it'd be an array and it could break it.
+// تابع زیر از متغیر جهانی استفاده کرده.
+// اگر تابع دیگری داشتیم که از این متغیر استفاده کرده بود، الان این متغیر حاوی یک آرایه
+// است و ممکن است آن تابع را خراب کند.
 $name = 'Ryan McDermott';
 
 function splitIntoFirstAndLastName(): void
@@ -782,7 +783,7 @@ splitIntoFirstAndLastName();
 var_dump($name); // ['Ryan', 'McDermott'];
 ```
 
-**Good:**
+**خوب:**
 
 ```php
 function splitIntoFirstAndLastName(string $name): array
@@ -797,17 +798,17 @@ var_dump($name); // 'Ryan McDermott';
 var_dump($newName); // ['Ryan', 'McDermott'];
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ بازگشت به بالا](#table-of-contents)**
 
-### Don't write to global functions
+### در توابع جانی چیزی ننویسید
 
-Polluting globals is a bad practice in many languages because you could clash with another
-library and the user of your API would be none-the-wiser until they get an exception in
-production. Let's think about an example: what if you wanted to have configuration array?
-You could write global function like `config()`, but it could clash with another library
-that tried to do the same thing.
+تغییر دادن گلوبال‌ها رد بیشتر زبان‌ها مشکل ساز است. زیرا می‌تواند با یک کتابخانه دیگر
+تداخل داشته باشد و کاربر API شما متوجه موضوع نشود تا زمانی که در زمان اجرا با اکسپشن
+روبرو شود. به این مثال توجه کنید: چی میشه اگر بخواهید یک آرایه پیکربندی داشته باشید؟
+می‌توانید یک تابع جهانی مانند `config()` بنویسید، ولی این کار می‌تواند تداخلی با یک
+کتابخانه دیگر که میخواهد دقیقا همین کار را انجام دهد داشته باشد.
 
-**Bad:**
+**بد:**
 
 ```php
 function config(): array
@@ -818,7 +819,7 @@ function config(): array
 }
 ```
 
-**Good:**
+**خوب:**
 
 ```php
 class Configuration
@@ -837,7 +838,7 @@ class Configuration
 }
 ```
 
-Load configuration and create instance of `Configuration` class
+بارگذاری تنظیمات و ایجاد یک نمونه از کلاس `Configuration`
 
 ```php
 $configuration = new Configuration([
@@ -845,21 +846,21 @@ $configuration = new Configuration([
 ]);
 ```
 
-And now you must use instance of `Configuration` in your application.
+و شما باید این نمونه از `Configuration` را در اپلیکیشن خود استفاده کنید.
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ بازگشت به بالا](#table-of-contents)**
 
-### Don't use a Singleton pattern
+### از الگوی Singleton استفاده نکنید
 
-Singleton is an [anti-pattern](https://en.wikipedia.org/wiki/Singleton_pattern). Paraphrased from Brian Button:
- 1. They are generally used as a **global instance**, why is that so bad? Because **you hide the dependencies** of your application in your code, instead of exposing them through the interfaces. Making something global to avoid passing it around is a [code smell](https://en.wikipedia.org/wiki/Code_smell).
- 2. They violate the [single responsibility principle](#single-responsibility-principle-srp): by virtue of the fact that **they control their own creation and lifecycle**.
- 3. They inherently cause code to be tightly [coupled](https://en.wikipedia.org/wiki/Coupling_%28computer_programming%29). This makes faking them out under **test rather difficult** in many cases.
- 4. They carry state around for the lifetime of the application. Another hit to testing since **you can end up with a situation where tests need to be ordered** which is a big no for unit tests. Why? Because each unit test should be independent from the other.
+سینگلتون یک [ضد الگو](https://en.wikipedia.org/wiki/Singleton_pattern) است. توسط Brian Button تفسیر شده:
+ 1. آنها معمولا به عنوان یک **نمونه جهانی** استفاده می‌شوند، چرا این خیلی بد است؟ چون **شما وابستگی‌های برنامه را در کد پنهان می‌کنید**، در صورتی که باید از طریق اینترفیس آنها را افشا کنید. گلوبال کردن چیزها برای اجتناب از پاس کردن آنها [بوی کد](https://en.wikipedia.org/wiki/Code_smell) است.
+ 2. آنها [اصل مسئولیت واحد](#single-responsibility-principle-srp) را نقض می‌کنند: با توجه به این واقعیت که **آنها ایجاد و چرخه حیات خود را کنترل می‌کنند**.
+ 3. آنها ذاتا کد را به شدت [در هم تنیده](https://en.wikipedia.org/wiki/Coupling_%28computer_programming%29) می‌کنند. این باعث می‌شود در بسیاری از موارد در زمره کدهای **با تست بسیار سخت** قرار گیرند.
+ 4. آنها state را در چرخه زندگی نرم افزار با خود حمل می‌کنند. که ضربه بزرگی به تست است. از آنجا که **می‌تواند شما را در وضعیتی قرار دهد که تست‌ها لازم باشد ترتیب داشته باشند** که مانع بزرگی برای unit testها است. چرا؟ چون هر یونیت تست باید مستقل از دیگری باشد.
 
-There is also very good thoughts by [Misko Hevery](http://misko.hevery.com/about/) about the [root of problem](http://misko.hevery.com/2008/08/25/root-cause-of-singletons/).
+همچنین نظرات بسیاری خوبی از [Misko Hevery](http://misko.hevery.com/about/) درباره [ریشه مشکل](http://misko.hevery.com/2008/08/25/root-cause-of-singletons/) وجود دارد.
 
-**Bad:**
+**بد:**
 
 ```php
 class DBConnection
@@ -886,7 +887,7 @@ class DBConnection
 $singleton = DBConnection::getInstance();
 ```
 
-**Good:**
+**خوب:**
 
 ```php
 class DBConnection
@@ -900,19 +901,19 @@ class DBConnection
 }
 ```
 
-Create instance of `DBConnection` class and configure it with [DSN](http://php.net/manual/en/pdo.construct.php#refsect1-pdo.construct-parameters).
+نمونه‌ای از کلاس `DBConnection` درست کرده و توسط [DSN](http://php.net/manual/en/pdo.construct.php#refsect1-pdo.construct-parameters) تنظیمات را انجام دهید.
 
 ```php
 $connection = new DBConnection($dsn);
 ```
 
-And now you must use instance of `DBConnection` in your application.
+الان باید نمونه `DBConnection` را در برنامه خود استفاده کنید.
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ بازگشت به بالا](#table-of-contents)**
 
-### Encapsulate conditionals
+### عبارات شرطی را کپسوله سازی کنید
 
-**Bad:**
+**بد:**
 
 ```php
 if ($article->state === 'published') {
@@ -920,7 +921,7 @@ if ($article->state === 'published') {
 }
 ```
 
-**Good:**
+**خوب:**
 
 ```php
 if ($article->isPublished()) {
@@ -928,11 +929,11 @@ if ($article->isPublished()) {
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ بازگشت به بالا](#table-of-contents)**
 
-### Avoid negative conditionals
+### از عبارات شرطی منفی دوری کنید
 
-**Bad:**
+**بد:**
 
 ```php
 function isDOMNodeNotPresent(\DOMNode $node): bool
@@ -946,7 +947,7 @@ if (!isDOMNodeNotPresent($node))
 }
 ```
 
-**Good:**
+**خوب:**
 
 ```php
 function isDOMNodePresent(\DOMNode $node): bool
@@ -959,20 +960,19 @@ if (isDOMNodePresent($node)) {
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ بازگشت به بالا](#table-of-contents)**
 
-### Avoid conditionals
+### از عبارات شرطی دوری کنید
 
-This seems like an impossible task. Upon first hearing this, most people say,
-"how am I supposed to do anything without an `if` statement?" The answer is that
-you can use polymorphism to achieve the same task in many cases. The second
-question is usually, "well that's great but why would I want to do that?" The
-answer is a previous clean code concept we learned: a function should only do
-one thing. When you have classes and functions that have `if` statements, you
-are telling your user that your function does more than one thing. Remember,
-just do one thing.
+این یکی غیر ممکن به نظر میرسه. اولین باری که بیشتر افراد این را میشنوند، می‌گویند،
+«چجوری باید بدون استفاده از `if` اصلا کاری بکنم؟» جواب این است که می‌توانید در اکثر موارد
+از پلی مورفیسم برای رسیدن به همان نتیجه استفاده کنید. معمولا سوال دوم این است که، «این
+خیلی خوبه ولی چرا باید این کارو بکنم؟» جواب در یک مفهوم کد تمیز دیگر است که قبلا خواندیم:
+هر تابع فقط باید یک کار انجام دهد. وقتی شما کلاس‌ها و توابعی دارید که از شرط‌های `if` استفاده
+می‌کنند، به کاربر می‌گویید که تابع شما بیش از یک کار انجام می‌دهد. به یاد داشته باشید،
+فقط یک کار انجام دهید.
 
-**Bad:**
+**بد:**
 
 ```php
 class Airplane
@@ -993,7 +993,7 @@ class Airplane
 }
 ```
 
-**Good:**
+**خوب:**
 
 ```php
 interface Airplane
@@ -1034,16 +1034,16 @@ class Cessna implements Airplane
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ بازگشت به بالا](#table-of-contents)**
 
-### Avoid type-checking (part 1)
+### از چک کردن نوع دوری کنید (بخش ۱)
 
-PHP is untyped, which means your functions can take any type of argument.
-Sometimes you are bitten by this freedom and it becomes tempting to do
-type-checking in your functions. There are many ways to avoid having to do this.
-The first thing to consider is consistent APIs.
+PHP یک زبان برنامه نویسی که در آن نوع داده تعریف نمی‌شود، بدین معنی که تابع شما می‌تواند
+هر نوع پارامتری بگیرد. در برخی موارد این آزادی شما را وسوسه می‌کند تا نوع داده را در تابع
+خود چک کنید. راه‌های مختلفی برای جلوگیری از انجام این کار وجود دارد. اولین چیزی که باید
+در نظر داشته باشید API‌های ثابت است.
 
-**Bad:**
+**بد:**
 
 ```php
 function travelToTexas($vehicle): void
@@ -1056,7 +1056,7 @@ function travelToTexas($vehicle): void
 }
 ```
 
-**Good:**
+**خوب:**
 
 ```php
 function travelToTexas(Vehicle $vehicle): void
@@ -1065,21 +1065,21 @@ function travelToTexas(Vehicle $vehicle): void
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ بازگشت به بالا](#table-of-contents)**
 
-### Avoid type-checking (part 2)
+### از چک کردن نوع دوری کنید (بخش ۲)
 
-If you are working with basic primitive values like strings, integers, and arrays,
-and you use PHP 7+ and you can't use polymorphism but you still feel the need to
-type-check, you should consider
-[type declaration](http://php.net/manual/en/functions.arguments.php#functions.arguments.type-declaration)
-or strict mode. It provides you with static typing on top of standard PHP syntax.
-The problem with manually type-checking is that doing it will require so much
-extra verbiage that the faux "type-safety" you get doesn't make up for the lost
-readability. Keep your PHP clean, write good tests, and have good code reviews.
-Otherwise, do all of that but with PHP strict type declaration or strict mode.
+اگر با نوع داده‌های ساده اولیه مانند رشته‌ها، اعداد صحیح و آرایه‌ها استفاده می‌کنید و
+همچنین از PHP 7+ استفاده می‌کنید و نمیتوانید از پلی مورفیسم سود ببرید اما هنوز نیاز
+به چک کردن نوع داده را حس می‌کنید، باید [اعلان نوع](http://php.net/manual/en/functions.arguments.php#functions.arguments.type-declaration)
+یا حالد سخت گیرانه را در نظر بگیرید. این کار امکان اعمال نوع داده استاتیک روی سینتاکس
+استاندارد PHP را به شما می‌دهد. مشکل چک کردن نوع به صورت دستی این است که انجام این کار
+نیاز به دراز گویی فراوان دارد که «امنیت نوع داده» ای که به دست می‌آورید خوانایی از دست
+رفته را جبران نمی‌کند. کد PHP خود را تمیز نگهدارید، تست‌های خوب بنویسید، و مرور کدهای خوبی
+انجام دهید. دی غیر اینصورت، همه این کارها را انجام دهید ولی با تعریف نوع داده سختگیرانه
+در PHP یا حالت سخت گیرانه.
 
-**Bad:**
+**بد:**
 
 ```php
 function combine($val1, $val2): int
@@ -1092,7 +1092,7 @@ function combine($val1, $val2): int
 }
 ```
 
-**Good:**
+**خوب:**
 
 ```php
 function combine(int $val1, int $val2): int
@@ -1101,15 +1101,15 @@ function combine(int $val1, int $val2): int
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ بازگشت به بالا](#table-of-contents)**
 
-### Remove dead code
+### کد مرده را حذف کنید
 
-Dead code is just as bad as duplicate code. There's no reason to keep it in
-your codebase. If it's not being called, get rid of it! It will still be safe
-in your version history if you still need it.
+کد مرده به بدی کد تکراری است. هیچ دلیلی برای نگهداری آن در کدهایتان وجود ندارد. اگر
+آن را در هیچ جای برنامه صدا نزده‌اید، از شرش خلاص شوید! اگر باز هم به آن کد نیاز داشتید
+در تاریخچه سیستم کنترل ورژن شما وجود دارد.
 
-**Bad:**
+**بد:**
 
 ```php
 function oldRequestModule(string $url): void
@@ -1126,7 +1126,7 @@ $request = newRequestModule($requestUrl);
 inventoryTracker('apples', $request, 'www.inventory-awesome.io');
 ```
 
-**Good:**
+**خوب:**
 
 ```php
 function requestModule(string $url): void
@@ -1138,7 +1138,7 @@ $request = requestModule($requestUrl);
 inventoryTracker('apples', $request, 'www.inventory-awesome.io');
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ بازگشت به بالا](#table-of-contents)**
 
 
 ## Objects and Data Structures
